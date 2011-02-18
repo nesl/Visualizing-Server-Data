@@ -85,7 +85,7 @@ TEMPLATE_DIRS = (
     "/home/nesl/mytemplates/",
 )
 
-STATIC_DOC_ROOT = "/home/nesl/Dropbox/NESL_Winter11/Django_projects/Server_data_visualization/static"
+STATIC_DOC_ROOT = "/home/nesl/Dropbox/NESL_Winter11/Django_projects/Visualizing-Server-Data/Server_data_visualization/static"
 
 INSTALLED_APPS = (
     'django.contrib.auth',
