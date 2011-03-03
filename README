@@ -1,1 +1,42 @@
 This project visualizes CPU, RAM, and SSD power data on a website using Django, Highcharts, and MongoDB. 
+
+This software was developed using Ubuntu 10.10.
+To use this software,
+
+1. Install mongodb:
+    sudo apt-get install mongodb
+
+2. Install Django by going to their website:
+    http://www.djangoproject.com/download/
+    or
+    sudo apt-get install python-django
+
+3. To load test data into Mongodb taken from our Atom servers,
+    run test_data/parse_server_output.py with output_shorter.daq2 as input:
+
+    python parse_server_output.py < output_shorter.daq2
+
+4. Start the mongodb server on a port. The following using port 90:
+    sudo mongod --port 90
+
+5. Unfortunately, the Django developers have taken a pretty firm stance
+    against relative paths:
+      http://code.djangoproject.com/ticket/694
+
+    Therefore, before starting the Django server, edit
+    Server_data_visualization/settings.py with the absolute paths that
+    correspond to your configuration. 
+    The absolute paths appear in:
+      1. the NAME field of the DATABASES dictionary
+      2. TEMPLATE_DIRS
+      3. STATIC_DOC_ROOT
+
+6. To start Django, in Server_data_visualization run:
+    python manage.py runserver
+
+7. To see the website, type
+
+    http://127.0.0.1:8000/power/
+
+    into a web browser and enjoy.
+
