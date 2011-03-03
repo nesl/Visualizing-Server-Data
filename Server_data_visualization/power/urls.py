@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import *
 
 urlpatterns = patterns('power.views',
-    (r'^$', 'index'),
+    (r'^$', 'charts_menu'),
     (r'^(?P<field>\w+)/(?P<field_val>\d+)/results/$', 'results'),
     (r'^(?P<field>\w+)/(?P<field_val>\w+)/results/$', 'results'),
     (r'^(?P<field>\w+)/(?P<field_val>\d+)/data', 'get_data'),

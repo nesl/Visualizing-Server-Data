@@ -12,12 +12,12 @@ import json
 connection = Connection('localhost', 90)
 db = connection.test_database3
 
-def index(request):
-    return render_to_response('power/index.html',
+def charts_menu(request):
+    return render_to_response('power/charts_menu.html',
         context_instance=RequestContext(request))
 
 def results(request, field, field_val):
-    print "POST: ",request.GET.get('channel')
+    # print "POST: ",request.GET.get('channel')
     get_val = request.GET.get('channel')
     if get_val != None:
         field = "data_channel"
@@ -55,3 +55,20 @@ def get_data(request, field, field_val):
     for obj in data_list:
         data.append(obj)
     return HttpResponse(json.dumps(data, default=json_util.default))
+
+def handle_uploaded_file(f):
+    destination = open('home/nesl/test.txt', 'wb+')
+    for chunk in f.chunks():
+        destination.write(chunk)
+    destination.close()
+
+def upload_file(request):
+    print "I'm IN UPLOAD FILE\n"
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            handle_uploaded_file(request.FILES['file'])
+            return HttpResponseRedirect('/success/url/')
+    else:
+        form = UploadFileForm()
+    return render_to_response('upload.html', {'form': form})
