@@ -1,0 +1,11 @@
+<h1> Select Executable </h1>
+
+    {% if form.is_multipart %}
+        <form enctype="multipart/form-data" method="post" action="/upload/"> 
+    {% else %}
+        <form method="post" action="/upload/"> 
+    {% endif %}
+    {% csrf_token %}
+    {{ form }}
+        <p><input type="submit" value="Submit" /> </p>
+    </form>
