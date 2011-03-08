@@ -23,13 +23,9 @@ To use this software,
     against relative paths:
       http://code.djangoproject.com/ticket/694
 
-    Therefore, before starting the Django server, edit
-    Server_data_visualization/settings.py with the absolute paths that
-    correspond to your configuration. 
-    The absolute paths appear in:
-      1. the NAME field of the DATABASES dictionary
-      2. TEMPLATE_DIRS
-      3. STATIC_DOC_ROOT
+    Therefore, before starting the Django server, edit ABS_PATH inside
+    Server_data_visualization/settings.py to the path corresponding to your 
+    project directory (Visualize-Server-Data)
 
 6. To start Django, in Server_data_visualization run:
     python manage.py syncdb
