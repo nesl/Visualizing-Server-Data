@@ -30,10 +30,11 @@ def upload_file(request):
             args = [settings.ABS_PATH +\
             "Server_data_visualization/uploads/" + file_name]
             print args
-            p = subprocess.Popen(args,\
+            results = subprocess.Popen(args,\
                     stdout=subprocess.PIPE).communicate()[0]
-            #return HttpResponseRedirect('/success/url/')
-            return HttpResponse(file_name + " output:\n" + p)
+            c = {"results":results}
+            return render_to_response("upload_success.html", {'c': c})
+            #return HttpResponse(file_name + " output:\n" + p)
     else:
         form = UploadFileForm()
         c = {}
