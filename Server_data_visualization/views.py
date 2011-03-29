@@ -15,10 +15,15 @@ class UploadFileForm(forms.Form):
     file  = forms.FileField()
 
 def handle_uploaded_file(f):
-    destination = open(settings.ABS_PATH + "Server_data_visualization/uploads/" + f.name, 'wb+')
+    path = settings.ABS_PATH + "Server_data_visualization/uploads/" + f.name
+    destination = open(path, "w+")
     for chunk in f.chunks():
         destination.write(chunk)
     destination.close()
+    os.chmod(path, stat.S_IXUSR)
+
+    #fd = os.open(settings.ABS_PATH + "Server_data_visualization/uploads/" +
+    #        f.name,
 
 
 def upload_file(request):
