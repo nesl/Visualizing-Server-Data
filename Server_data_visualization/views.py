@@ -20,7 +20,7 @@ def handle_uploaded_file(f):
     for chunk in f.chunks():
         destination.write(chunk)
     destination.close()
-    os.chmod(path, stat.S_IXUSR)
+    os.chmod(path, stat.S_IXUSR | stat.S_IWUSR | stat.S_IRUSR)
 
     #fd = os.open(settings.ABS_PATH + "Server_data_visualization/uploads/" +
     #        f.name,
