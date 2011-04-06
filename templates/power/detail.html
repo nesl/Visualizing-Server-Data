@@ -16,10 +16,10 @@ var chart1; // globally available
 function load_data()
 {
     power_array = [];
-    $.post('/power/{{data_list.field}}/{{data_list.field_val}}/data',
+    $.get('/power/{{data_list.field}}/{{data_list.field_val}}/data',
         //{'data': JSON.stringify(message) },
         function(data, XMLHttpRequest) {
-            data = JSON.parse(data)
+            data = JSON.parse(data);
             console.log('Received data');
             if(data.length <= 0)
             {

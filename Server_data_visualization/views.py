@@ -11,20 +11,16 @@ import stat
 import os
 
 class UploadFileForm(forms.Form):
-    title = forms.CharField(max_length=50)
+    # title = forms.CharField(max_length=50)
     file  = forms.FileField()
 
 def handle_uploaded_file(f):
     path = settings.ABS_PATH + "Server_data_visualization/uploads/" + f.name
-    destination = open(path, "w+")
+    destination = open(path, "wb+")
     for chunk in f.chunks():
         destination.write(chunk)
     destination.close()
     os.chmod(path, stat.S_IXUSR | stat.S_IWUSR | stat.S_IRUSR)
-
-    #fd = os.open(settings.ABS_PATH + "Server_data_visualization/uploads/" +
-    #        f.name,
-
 
 def upload_file(request):
     if request.method == "POST":
@@ -32,14 +28,19 @@ def upload_file(request):
         if form.is_valid():
             handle_uploaded_file(request.FILES["file"])
             file_name = request.FILES["file"].name
-            args = [settings.ABS_PATH +\
-            "Server_data_visualization/uploads/" + file_name]
-            print args
-            results = subprocess.Popen(args,\
-                    stdout=subprocess.PIPE).communicate()[0]
-            c = {"results":results}
+            args = "time " + settings.ABS_PATH +\
+            "Server_data_visualization/uploads/" + file_name
+            print "Args: ", args
+            results = subprocess.Popen((args),\
+                    stdout=subprocess.PIPE,stderr=subprocess.PIPE, shell=True).communicate()
+            print "Results: " ,results
+            print "index: ", results[1].find("elapsed")
+            # elapsed is 7 characters long
+            time = results[1][:results[1].find("elapsed") + 7]
+            print time
+            c = {"results":results[0], "time":time}
             return render_to_response("upload_success.html", {'c': c})
-            #return HttpResponse(file_name + " output:\n" + p)
+
     else:
         form = UploadFileForm()
         c = {}
