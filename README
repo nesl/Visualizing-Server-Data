@@ -3,23 +3,28 @@ This project visualizes CPU, RAM, and SSD power data on a website using Django, 
 This software was developed using Ubuntu 10.10.
 To use this software,
 
-1. Install mongodb:
-    sudo apt-get install mongodb
+1. Install mongodb and pymongo:
+    sudo apt-get install mongodb, python-pymongo
 
-2. Install Django by going to their website:
+2. Create the data directory for mongodb:
+    sudo mkdir /data
+    sudo mkdir /data/db
+
+3. Install Django by going to their website:
     http://www.djangoproject.com/download/
     or
     sudo apt-get install python-django
 
-3. To load test data into Mongodb taken from our Atom servers,
+4. Start the mongodb server on a port. The following using port 90:
+    sudo mongod --port 90
+
+5. To load test data into Mongodb taken from our Atom servers,
     run test_data/parse_server_output.py with output_shorter.daq2 as input:
 
     python parse_server_output.py < output_shorter.daq2
 
-4. Start the mongodb server on a port. The following using port 90:
-    sudo mongod --port 90
 
-5. Unfortunately, the Django developers have taken a pretty firm stance
+6. Unfortunately, the Django developers have taken a pretty firm stance
     against relative paths:
       http://code.djangoproject.com/ticket/694
 
@@ -27,11 +32,11 @@ To use this software,
     Server_data_visualization/settings.py to the path corresponding to your 
     project directory (Visualize-Server-Data)
 
-6. To start Django, in Server_data_visualization run:
+7. To start Django, in Server_data_visualization run:
     python manage.py syncdb
     python manage.py runserver
 
-7. To see the website, type
+8. To see the website, type
 
     http://127.0.0.1:8000/power/
 
