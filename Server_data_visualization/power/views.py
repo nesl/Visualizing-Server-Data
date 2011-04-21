@@ -67,7 +67,6 @@ def handle_uploaded_file(f):
     destination.close()
 
 def upload_file(request):
-    print "I'm IN UPLOAD FILE\n"
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():

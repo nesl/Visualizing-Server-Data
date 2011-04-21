@@ -13,6 +13,7 @@ import os
 class UploadFileForm(forms.Form):
     # title = forms.CharField(max_length=50)
     file  = forms.FileField()
+    params = forms.CharField(required=False)
 
 def handle_uploaded_file(f):
     path = settings.ABS_PATH + "Server_data_visualization/uploads/" + f.name
@@ -28,8 +29,11 @@ def upload_file(request):
         if form.is_valid():
             handle_uploaded_file(request.FILES["file"])
             file_name = request.FILES["file"].name
+            print "TEST"
+            params = request.POST['params']
+            print "params: " , params
             args = "time " + settings.ABS_PATH +\
-            "Server_data_visualization/uploads/" + file_name
+            "Server_data_visualization/uploads/" + file_name + " " + params
             print "Args: ", args
             results = subprocess.Popen((args),\
                     stdout=subprocess.PIPE,stderr=subprocess.PIPE, shell=True).communicate()
@@ -40,10 +44,18 @@ def upload_file(request):
             print time
             c = {"results":results[0], "time":time}
             return render_to_response("upload_success.html", {'c': c})
+        else:
+            form = UploadFileForm()
+            c = {}
+            c.update(csrf(request))
+            c["form"] = form
+
+            return render_to_response("upload.html", c)
 
     else:
         form = UploadFileForm()
         c = {}
         c.update(csrf(request))
         c["form"] = form
-    return render_to_response("upload.html", c)
+
+        return render_to_response("upload.html", c)
