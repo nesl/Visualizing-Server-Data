@@ -1,0 +1,84 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <comedilib.h>
+
+#define freq2periodns(F)	(int)(1e9/F)
+
+#define N_CHANS				16
+
+extern void dump_cmd(FILE *file,comedi_cmd *cmd);
+
+static unsigned int chanlist[N_CHANS];
+
+int prepare_channels() {
+	int i;
+	for(i = 0; i <  N_CHANS/2; i++){	
+		chanlist[i] = CR_PACK(i, 6, AREF_DIFF);
+	}
+	for(i = N_CHANS/2; i <  N_CHANS; i++){	
+		chanlist[i] = CR_PACK(i+N_CHANS/2, 6, AREF_DIFF);
+	}	
+}
+
+int prepare_cmd(comedi_cmd *cmd, int sampling_frequency) {
+	memset(cmd,0,sizeof(*cmd));
+	cmd->subdev =	0;
+	cmd->flags = 0;
+	cmd->start_src =	TRIG_NOW;
+	cmd->start_arg =	0;
+	cmd->scan_begin_src = TRIG_TIMER;
+	/* Max frequency for PCI-6254 is 1MS/s, 1000 ns period */
+	int scan_period = freq2periodns(sampling_frequency);
+	cmd->scan_begin_arg = scan_period*N_CHANS;		/* in ns */
+	/* Scan each channel sequentially */
+	cmd->convert_src =	TRIG_TIMER;
+	cmd->convert_arg =	scan_period;		
+	/* Stop when all channels have completed */	
+	cmd->scan_end_src =	TRIG_COUNT;
+	cmd->scan_end_arg =	N_CHANS;		/* All the diff channels for PCI-6254 */
+	/* Scan forever, until comedi_cancel() */	
+	cmd->stop_src =		TRIG_NONE;
+	cmd->stop_arg =		0;	
+	/* Alternative trigger
+	cmd->stop_src =		TRIG_COUNT;
+	cmd->stop_arg =		n_scan;	
+	*/
+	cmd->chanlist =		chanlist;
+	cmd->chanlist_len =	N_CHANS;	
+}
+
+
+int main(int argc, char *argv[]) {
+	comedi_cmd c, *cmd=&c;
+	comedi_t *dev;	
+	int ret;	
+	
+	dev = comedi_open("/dev/comedi0");
+	if(!dev){
+		comedi_perror("/dev/comedi0");
+		exit(1);
+	}	
+
+	comedi_cancel(dev,0 );	
+	
+	prepare_cmd(cmd, 1000000);
+	
+	//dump_cmd(stderr, cmd);	
+	
+	printf("Cmd test: %d\n",comedi_command_test(dev, cmd));
+	
+	//comedi_get_cmd_generic_timed(dev, 0, cmd, 16, 1000);
+	dump_cmd(stderr, cmd);		
+	
+
+	ret = comedi_command(dev, cmd);
+	if(ret < 0){
+		comedi_perror("comedi_command");
+		exit(1);
+	}
+	//subdev_flags = comedi_get_subdevice_flags(dev, options.subdevice);	
+	
+	comedi_cancel(dev,0 );	
+
+}
