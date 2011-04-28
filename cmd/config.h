@@ -12,7 +12,8 @@
 
 
 
-#define FILE_PREFIX "config/"
+#define ABS_PATH "/home/nesl/Visualizing-Server-Data/"
+#define FILE_PREFIX "cmd/config/"
 #define RES_SRT		"_resistance"
 #define VOL_SRT		"_voltage"
 
@@ -21,9 +22,11 @@ int load_one(char * daqname, char * resource, double * dest) {
 	memset(filename,0,256);
 	float values[16];	
 	FILE * fd;
+    strcat(filename, ABS_PATH);
 	strcat(filename,FILE_PREFIX);
 	strcat(filename,daqname);
 	strcat(filename,resource);
+    printf("filename: %s\n", filename);
 	fd = fopen(filename,"r");
 	
 	fscanf(fd, "%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f\n",

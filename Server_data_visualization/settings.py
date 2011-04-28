@@ -9,7 +9,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-ABS_PATH = '/home/nesl/Dropbox/NESL_Winter11/Django_projects/Visualizing-Server-Data/'
+ABS_PATH = '/home/nesl/Visualizing-Server-Data/'
 
 DATABASES = {
     'default': {

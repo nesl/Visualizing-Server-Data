@@ -32,6 +32,12 @@ To use this software,
     Server_data_visualization/settings.py to the path corresponding to your 
     project directory (Visualize-Server-Data)
 
+7. DAQ instructions (if you plan on using the daq instead of the test_input):
+    Navigate to cmd directory and edit the ABS_PATH in config.h and compile
+    with:
+    
+    gcc daq.c -lcomedi -lm -lpthread -o daq
+
 7. To start Django, in Server_data_visualization run:
     python manage.py syncdb
     python manage.py runserver
@@ -42,3 +48,4 @@ To use this software,
 
     into a web browser and enjoy.
 
+          Also, edit the ABS_PATH in /cmd/daq.c if you plan on using the daq.

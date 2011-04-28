@@ -1,7 +1,13 @@
 #include <stdio.h>
+#include <unistd.h>
 
 int main(int argc, const char *argv[])
 {
-    printf("Hello World!\n");
+    int i;
+    for(i = 0; i < 10; i++)
+    {
+        printf("Hello World!\n");
+        sleep(1);
+    }
     return 0;
 }

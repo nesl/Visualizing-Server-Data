@@ -4,7 +4,7 @@ from django.core.context_processors import csrf
 from django import forms
 
 # Subprocess, to spawn new process and return output
-import subprocess
+import subprocess, shlex
 import settings
 import stat
 
@@ -34,10 +34,11 @@ def upload_file(request):
             file_name = request.FILES["file"].name
 
             # Start the DAQ and get PID
-            args = settings.ABS_PATH + "cmd/daq" + " daq0"
-            results = subprocess.Popen((args),\
-                    stdout=subprocess.PIPE,stderr=subprocess.PIPE).communicate()
-
+            cmd = "sudo" + " " + settings.ABS_PATH + "cmd/daq daq0"
+            args = shlex.split(cmd)
+            print "ARGS: ", args
+            process = subprocess.Popen(args,\
+                    stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 
             # Run the executable
             params = request.POST['params']
@@ -45,13 +46,24 @@ def upload_file(request):
             "Server_data_visualization/uploads/" + file_name + " " + params
             results = subprocess.Popen((args),\
                     stdout=subprocess.PIPE,stderr=subprocess.PIPE, shell=True).communicate()
+
+            # Stop the DAQ and get the DAQ results
+            os.system("sudo kill %s" % (process.pid))
+            print "STOPPING THE DAQ"
+            daq_results = process.communicate()
+
+            # Save the DAQ results to output file
+            f = open("test.txt", 'w')
+            f.write(daq_results[0])
+            f.close()
+
+            # Record results to the dictionary
             print "Results: " ,results
-            print "index: ", results[1].find("elapsed")
             # elapsed is 7 characters long
             time = results[1][:results[1].find("elapsed") + 7]
-            print time
             c = {"results":results[0], "time":time}
             return render_to_response("upload_success.html", {'c': c})
+
         else:
             # Ask for the upload again if the form is not valid
             form = UploadFileForm()
