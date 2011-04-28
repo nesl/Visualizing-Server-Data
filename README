@@ -38,11 +38,11 @@ To use this software,
     
     gcc daq.c -lcomedi -lm -lpthread -o daq
 
-7. To start Django, in Server_data_visualization run:
+8. To start Django, in Server_data_visualization run:
     python manage.py syncdb
     python manage.py runserver
 
-8. To see the website, type
+9. To see the website, type
 
     http://127.0.0.1:8000/power/
 
