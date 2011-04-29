@@ -4,7 +4,7 @@
 int main(int argc, const char *argv[])
 {
     int i;
-    for(i = 0; i < 5; i++)
+    for(i = 0; i < 7; i++)
     {
         printf("Hello World!\n");
         sleep(1);

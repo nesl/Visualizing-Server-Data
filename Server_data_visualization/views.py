@@ -10,6 +10,8 @@ import stat
 
 import os
 
+import add_to_database
+
 class UploadFileForm(forms.Form):
     """ Specifies the parameters needed by the form """
     # title = forms.CharField(max_length=50)
@@ -52,15 +54,19 @@ def upload_file(request):
             print "STOPPING THE DAQ"
             daq_results = process.communicate()
 
-            # Save the DAQ results to output file
-            f = open("test.txt", 'w')
+            # Save the DAQ results to output file for reference later
+            f = open("daq_results.txt", 'w')
             f.write(daq_results[0])
             f.close()
 
-            # Record results to the dictionary
-            print "Results: " ,results
-            # elapsed is 7 characters long
+            # Add the information to the database
+            add_to_database.add_to_database(0)
+
+            # Strip only the user, system, and elapsed time from the time
+            # results. Cutoff after elapsed, which is 7 characters long.
             time = results[1][:results[1].find("elapsed") + 7]
+
+            # Record results to the dictionary
             c = {"results":results[0], "time":time}
             return render_to_response("upload_success.html", {'c': c})
 

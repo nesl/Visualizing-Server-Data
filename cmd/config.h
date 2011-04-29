@@ -26,7 +26,6 @@ int load_one(char * daqname, char * resource, double * dest) {
 	strcat(filename,FILE_PREFIX);
 	strcat(filename,daqname);
 	strcat(filename,resource);
-    printf("filename: %s\n", filename);
 	fd = fopen(filename,"r");
 	
 	fscanf(fd, "%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f\n",
