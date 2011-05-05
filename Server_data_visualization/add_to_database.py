@@ -67,5 +67,3 @@ def add_to_database(daq):
             if count == 15:
                 break
             count += 1
-
-add_to_database(0)
