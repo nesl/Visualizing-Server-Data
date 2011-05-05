@@ -5,7 +5,8 @@ from pymongo import Connection
 
 def add_to_database(daq):
     connection = Connection('localhost', 90)
-    db = connection.test_database4
+    connection.drop_database('visual_server_db')
+    db = connection.visual_server_db
 
     daq_file = open("daq_results.txt", "r")
 
@@ -53,12 +54,12 @@ def add_to_database(daq):
         for token in tokened_line:
             try:
                 node, part = channel_format[count]
-                if node != -1:
+                if token != "+nan":
                     mongo_entry = { 'data_channel': count,
                                     'node': node,
                                     'type': part,
                                     'power': float(token.lstrip('+')),
-                                    'daq': 2,
+                                    'daq': daq,
                                     }
                     db.data.insert(mongo_entry)
             except ValueError, e:
@@ -67,3 +68,4 @@ def add_to_database(daq):
                 break
             count += 1
 
+add_to_database(0)
