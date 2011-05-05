@@ -33,8 +33,8 @@ To use this software,
     project directory (Visualize-Server-Data)
 
 7. DAQ instructions (if you plan on using the daq instead of the test_input):
-    Navigate to cmd directory and edit the ABS_PATH in config.h and compile
-    with:
+    Navigate to cmd directory and edit the ABS_PATH (same as before) in 
+    config.h and compile with:
     
     gcc daq.c -lcomedi -lm -lpthread -o daq
 
@@ -48,4 +48,3 @@ To use this software,
 
     into a web browser and enjoy.
 
-          Also, edit the ABS_PATH in /cmd/daq.c if you plan on using the daq.
