@@ -34,7 +34,7 @@ To use this software,
 
 7. DAQ instructions (if you plan on using the daq instead of the test_input):
     Navigate to cmd directory and edit the ABS_PATH (same as before) in 
-    config.h and compile with:
+    cmd/config.h and compile with:
     
     gcc daq.c -lcomedi -lm -lpthread -o daq
 
