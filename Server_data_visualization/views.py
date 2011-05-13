@@ -59,7 +59,7 @@ def upload_file(request):
             f.write(daq_results[0])
             f.close()
 
-            # Add the information to the database
+            # Add the information to the database in another process
             add_to_database.add_to_database(0)
 
             # Strip only the user, system, and elapsed time from the time
