@@ -26,7 +26,9 @@ function load_data()
             console.log('Received data');
             if(data.length <= 0)
             {
-                alert("No data was found for this query");
+                alert("No data was found for this query.\nThere is a minimum\
+ amount of time the program must run in order for the daq to return significant\
+ results.\nTherefore, consider increasing the time spent for your program.");
                 return; 
             }
             for(i = 0; i < data.length; i++)
@@ -35,8 +37,10 @@ function load_data()
                 total_power += data[i].power;
             }
             chart1.series[0].setData(power_array,true);
+            // Get Energy: 
+            // Total power * # measurements/(sampling rate/# channels)
             document.getElementById("text-container").textContent= "Energy: "
-            + total_power/8;
+            + total_power/(1000/16);
             
     
         }
@@ -58,17 +62,17 @@ $(document).ready(function() {
          },
          xAxis: {
             title: {
-                text: 'Time'
+                text: 'Time (Seconds)'
             }
          },
          yAxis: {
             title: {
-               text: 'Power'
+               text: 'Power (Watts)'
             }
          },
          series: [{
             name: 'Power',
-            pointInterval: 1/8,
+            pointInterval: 0.016,
             data: [] 
          }
          ]

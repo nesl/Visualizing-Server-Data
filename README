@@ -23,7 +23,6 @@ To use this software,
 
     python parse_server_output.py < output_shorter.daq2
 
-
 6. Unfortunately, the Django developers have taken a pretty firm stance
     against relative paths:
       http://code.djangoproject.com/ticket/694
@@ -40,11 +39,11 @@ To use this software,
 
 8. To start Django, in Server_data_visualization run:
     python manage.py syncdb
-    python manage.py runserver
+    python manage.py runserver 0:8000
 
 9. To see the website, type
 
-    http://127.0.0.1:8000/power/
+    http://127.0.0.1:8000/upload/
 
     into a web browser and enjoy.
 
