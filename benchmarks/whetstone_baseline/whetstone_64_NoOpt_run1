@@ -1,0 +1,45 @@
+  ####################################################
+  getDetails and MHz
+
+  Assembler CPUID and RDTSC      
+  CPU GenuineIntel, Features Code BFEBFBFF, Model Code 000106CA
+           Intel(R) Atom(TM) CPU D525   @ 1.80GHz
+  Measured - Minimum 1800 MHz, Maximum 1800 MHz
+  Linux Functions
+  get_nprocs() - CPUs 4, Configured CPUs 4
+  get_phys_pages() and size - RAM Size  1.95 GB, Page Size 4096 Bytes
+  uname() - Linux, ac0, 2.6.35-25-server
+  #44-Ubuntu SMP Fri Jan 21 19:09:14 UTC 2011, x86_64
+
+##########################################
+Single Precision C Whetstone Benchmark No Opt 64 Bit, Thu May 12 17:07:12 2011
+
+Calibrate
+       0.02 Seconds          1   Passes (x 100)
+       0.11 Seconds          5   Passes (x 100)
+       0.54 Seconds         25   Passes (x 100)
+       2.67 Seconds        125   Passes (x 100)
+
+Use 467  passes (x 100)
+
+          Single Precision C/C++ Whetstone Benchmark
+
+Loop content                  Result              MFLOPS      MOPS   Seconds
+
+N1 floating point     -1.12475013732910156       236.424              0.038
+N2 floating point     -1.12274742126464844       168.239              0.373
+N3 if then else        1.00000000000000000                 165.997    0.291
+N4 fixed point        12.00000000000000000                 164.032    0.897
+N5 sin,cos etc.        0.49911010265350342                  16.633    2.336
+N6 floating point      0.99999982118606567        81.588              3.087
+N7 assignments         3.00000000000000000                  97.627    0.884
+N8 exp,sqrt etc.       0.75110864639282227                   8.360    2.078
+
+MWIPS                                            467.728              9.984
+
+
+A new results file, whets.txt,  will have been created in the same
+directory as the .EXE files, if one did not already exist.
+
+ Press Enter
+
