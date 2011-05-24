@@ -1,0 +1,10 @@
+The dhrystone benchmarks were benchmarked with the find_primes executable
+in the test_data/test_exec folder. The parameters passed to it are:
+15000000 8
+where the program will find the prime numbers up until 15000000 with 8
+threads (programmed with OpenMP). These numbers give a 
+sufficient amount of time for the program to run while the benchmark runs. 
+
+The whetstone benchmarks were benchmarked with the find_primes executable as
+well, but the parameters passed to it are:
+17000000 8

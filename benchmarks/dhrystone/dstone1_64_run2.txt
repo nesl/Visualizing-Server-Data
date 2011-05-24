@@ -1,0 +1,36 @@
+  ####################################################
+  getDetails and MHz
+
+  Assembler CPUID and RDTSC      
+  CPU GenuineIntel, Features Code BFEBFBFF, Model Code 000106CA
+           Intel(R) Atom(TM) CPU D525   @ 1.80GHz
+  Measured - Minimum 643 MHz, Maximum 819 MHz
+  Linux Functions
+  get_nprocs() - CPUs 4, Configured CPUs 4
+  get_phys_pages() and size - RAM Size  1.95 GB, Page Size 4096 Bytes
+  uname() - Linux, ac0, 2.6.35-25-server
+  #44-Ubuntu SMP Fri Jan 21 19:09:14 UTC 2011, x86_64
+
+##########################################
+
+Dhrystone Benchmark, Version 1.1 (Language: C or C++)
+
+Optimisation    Opt 3 64 Bit
+
+       10000 runs   0.00 seconds 
+      100000 runs   0.03 seconds 
+     1000000 runs   0.23 seconds 
+     2000000 runs   0.46 seconds 
+     4000000 runs   0.50 seconds 
+     8000000 runs   0.73 seconds 
+    16000000 runs   1.55 seconds 
+    32000000 runs   3.00 seconds 
+
+Array2Glob8/7: O.K.      32000010
+
+Microseconds for one run through Dhrystone:         0.09 
+Dhrystones per Second:                        10658832 
+VAX  MIPS rating =                               6066.50 
+
+ Press Enter
+
