@@ -16,7 +16,7 @@ class UploadFileForm(forms.Form):
     """ Specifies the parameters needed by the form """
     # title = forms.CharField(max_length=50)
     file  = forms.FileField()
-    parameters = forms.CharField(required=False)
+    params = forms.CharField(required=False)
 
 def handle_uploaded_file(f):
     """ Writes the file in chunks to the file system with RWX privileges """
@@ -43,22 +43,20 @@ def upload_file(request):
                     stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 
             # Run the executable
-            parameters = request.POST['parameters']
+            params = request.POST['params']
             args = "time " + settings.ABS_PATH +\
-            "Server_data_visualization/uploads/" + file_name + " " + parameters
+            "Server_data_visualization/uploads/" + file_name + " " + params
             results = subprocess.Popen((args),\
                     stdout=subprocess.PIPE,stderr=subprocess.PIPE, shell=True).communicate()
 
-            # Stop the DAQ and get the DAQ results. Also, take off the last
-            # line of the results b/c its most likely trash data.
+            # Stop the DAQ and get the DAQ results
             os.system("sudo kill %s" % (process.pid))
-            daq_results = process.communicate()[0]
-            daq_results = daq_results[:daq_results.rfind('\n')-1]
+            print "STOPPING THE DAQ"
+            daq_results = process.communicate()
 
-            print "DAQ_RESULTS: " + daq_results
             # Save the DAQ results to output file for reference later
             f = open("daq_results.txt", 'w')
-            f.write(daq_results)
+            f.write(daq_results[0])
             f.close()
 
             # Add the information to the database in another process
