@@ -7,4 +7,4 @@ sufficient amount of time for the program to run while the benchmark runs.
 
 The whetstone benchmarks were benchmarked with the find_primes executable as
 well, but the parameters passed to it are:
-17000000 8
+20000000 8
