@@ -11,6 +11,9 @@
 <div id="text-container" style="position: absolute; top: 400px; left: 15 px; margin: 0 2;">
 </div>
 
+<div id="text-container2" style="position: absolute; top: 420px; left: 15 px; margin: 0 2;">
+</div>
+
 <script type = "text/javascript">
 
 var chart1; // globally available
@@ -80,8 +83,10 @@ function load_data()
             chart1.series[0].setData(power_array,true);
             // Set Energy: 
             // Total power * # measurements/(sampling rate/# channels)
-            document.getElementById("text-container").textContent= "Energy: "
-            + total_power/(frequency/num_channels);
+            document.getElementById("text-container").textContent = "Average\
+                Power: " + total_power/data.length;
+            document.getElementById("text-container2").textContent ="Energy: \
+            "+ total_power/(frequency/num_channels);
             
     
         }
