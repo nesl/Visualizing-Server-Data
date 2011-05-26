@@ -7,6 +7,7 @@ from django import forms
 import subprocess, shlex
 import settings
 import stat
+import time
 
 import os
 
@@ -35,6 +36,9 @@ def upload_file(request):
             handle_uploaded_file(request.FILES["file"])
             file_name = request.FILES["file"].name
 
+            # Add a one second buffer
+            time.sleep(1)
+
             # Start the DAQ and get PID
             cmd = "sudo" + " " + settings.ABS_PATH + "cmd/daq daq0"
             args = shlex.split(cmd)
@@ -48,6 +52,9 @@ def upload_file(request):
             "Server_data_visualization/uploads/" + file_name + " " + parameters
             results = subprocess.Popen((args),\
                     stdout=subprocess.PIPE,stderr=subprocess.PIPE, shell=True).communicate()
+
+            # Add a one second buffer
+            time.sleep(1)
 
             # Stop the DAQ and get the DAQ results
             os.system("sudo kill %s" % (process.pid))
@@ -65,10 +72,10 @@ def upload_file(request):
 
                 # Strip only the user, system, and elapsed time from the time
                 # results. Cutoff after elapsed, which is 7 characters long.
-                time = results[1][:results[1].find("elapsed") + 7]
+                etime = results[1][:results[1].find("elapsed") + 7]
 
                 # Record results to the dictionary
-                c = {"results":results[0], "time":time}
+                c = {"results":results[0], "time":etime}
             else:
                 # Report the error
                 if results[1] == None:
