@@ -16,7 +16,7 @@ class UploadFileForm(forms.Form):
     """ Specifies the parameters needed by the form """
     # title = forms.CharField(max_length=50)
     file  = forms.FileField()
-    params = forms.CharField(required=False)
+    parameters = forms.CharField(required=False)
 
 def handle_uploaded_file(f):
     """ Writes the file in chunks to the file system with RWX privileges """
@@ -43,31 +43,39 @@ def upload_file(request):
                     stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 
             # Run the executable
-            params = request.POST['params']
+            parameters = request.POST['parameters']
             args = "time " + settings.ABS_PATH +\
-            "Server_data_visualization/uploads/" + file_name + " " + params
+            "Server_data_visualization/uploads/" + file_name + " " + parameters
             results = subprocess.Popen((args),\
                     stdout=subprocess.PIPE,stderr=subprocess.PIPE, shell=True).communicate()
 
             # Stop the DAQ and get the DAQ results
             os.system("sudo kill %s" % (process.pid))
-            print "STOPPING THE DAQ"
             daq_results = process.communicate()
 
-            # Save the DAQ results to output file for reference later
-            f = open("daq_results.txt", 'w')
-            f.write(daq_results[0])
-            f.close()
+            # If no errors or the comedi device is not busy
+            if results[1] == None or daq_results[1].find("busy") == -1:
+                # Save the DAQ results to output file for reference later
+                f = open("daq_results.txt", 'w')
+                f.write(daq_results[0])
+                f.close()
 
-            # Add the information to the database in another process
-            add_to_database.add_to_database(0)
+                # Add the information to the database in another process
+                add_to_database.add_to_database(0)
 
-            # Strip only the user, system, and elapsed time from the time
-            # results. Cutoff after elapsed, which is 7 characters long.
-            time = results[1][:results[1].find("elapsed") + 7]
+                # Strip only the user, system, and elapsed time from the time
+                # results. Cutoff after elapsed, which is 7 characters long.
+                time = results[1][:results[1].find("elapsed") + 7]
 
-            # Record results to the dictionary
-            c = {"results":results[0], "time":time}
+                # Record results to the dictionary
+                c = {"results":results[0], "time":time}
+            else:
+                # Report the error
+                if results[1] == None:
+                    c = {"results":results[1], "time":0}
+                else:
+                    c = {"results":"The daq is currently being used by\
+                    another process.", "time":0}
             return render_to_response("upload_success.html", {'c': c})
 
         else:
