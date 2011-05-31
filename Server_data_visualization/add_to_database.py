@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import sys
+import settings
 from pymongo import Connection
 
 
@@ -13,10 +14,10 @@ def add_to_database(daq):
     # Open the daq configuration file and daq file created from running the
     # executable
     if daq == 0:
-        daq_config = open("../cmd/config/daq0_description", "r")
+        daq_config = open(settings.ABS_PATH + "cmd/config/daq0_description", "r")
     else:
-        daq_config = open("../cmd/config/daq2_description", "r")
-    daq_file = open("daq_results.txt", "r")
+        daq_config = open(settings.ABS_PATH + "cmd/config/daq2_description", "r")
+    daq_file = open(settings.ABS_PATH + "Server_data_visualization/daq_results.txt", "r")
 
 
     # Read daq configuration file

@@ -26,7 +26,7 @@ def handle_uploaded_file(f):
     for chunk in f.chunks():
         destination.write(chunk)
     destination.close()
-    os.chmod(path, stat.S_IXUSR | stat.S_IWUSR | stat.S_IRUSR)
+    # os.chmod(path, stat.S_IXUSR | stat.S_IWUSR | stat.S_IRUSR)
 
 def upload_file(request):
     """ Starts the DAQ, runs the executable, and stops the DAQ """
@@ -38,6 +38,9 @@ def upload_file(request):
 
             # Add a one second buffer
             time.sleep(1)
+
+            # Obtain root privileges
+            os.seteuid(0)
 
             # Start the DAQ and get PID
             cmd = "sudo" + " " + settings.ABS_PATH + "cmd/daq daq0"
@@ -63,7 +66,7 @@ def upload_file(request):
             # If no errors or the comedi device is not busy
             if results[1] == None or daq_results[1].find("busy") == -1:
                 # Save the DAQ results to output file for reference later
-                f = open("daq_results.txt", 'w')
+                f = open(settings.ABS_PATH + "Server_data_visualization/daq_results.txt", "w")
                 f.write(daq_results[0])
                 f.close()
 
