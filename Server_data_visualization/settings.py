@@ -9,7 +9,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-ABS_PATH = '/home/nesl/Visualizing-Server-Data/'
+ABS_PATH = '/data/dev/Visualizing-Server-Data/'
 
 DATABASES = {
     'default': {

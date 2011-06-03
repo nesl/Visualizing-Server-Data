@@ -1,0 +1,15 @@
+<html>
+    <h1> Signin </h1>
+
+    <form method="post" action=/upload/>
+    {% csrf_token %}
+
+        <p> Username: </p>
+        <input type="text" name="username" /><br />
+        <p> Password: </p>
+        <input type="password" name="password" />
+
+        <input type="submit" value="Submit" /> 
+    </form>
+
+</html>

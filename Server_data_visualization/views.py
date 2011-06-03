@@ -40,10 +40,10 @@ def upload_file(request):
             time.sleep(1)
 
             # Obtain root privileges
-            os.seteuid(0)
+            # os.setuid(0)
 
             # Start the DAQ and get PID
-            cmd = "sudo" + " " + settings.ABS_PATH + "cmd/daq daq0"
+            cmd = settings.ABS_PATH + "cmd/daq daq0"
             args = shlex.split(cmd)
             print "ARGS: ", args
             process = subprocess.Popen(args,\
@@ -60,8 +60,12 @@ def upload_file(request):
             time.sleep(1)
 
             # Stop the DAQ and get the DAQ results
-            os.system("sudo kill %s" % (process.pid))
+            print "STOPPING PID: ", process.pid
+            os.system("kill %s" % (process.pid))
             daq_results = process.communicate()
+
+            print "DAQ_RESULTS: " + daq_results[0]
+            print "\n"
 
             # If no errors or the comedi device is not busy
             if results[1] == None or daq_results[1].find("busy") == -1:
@@ -90,6 +94,9 @@ def upload_file(request):
 
         else:
             # Ask for the upload again if the form is not valid
+            if password != "asdf":
+                return render_to_response("signin_failure.html")
+
             form = UploadFileForm()
             c = {}
             c.update(csrf(request))
@@ -99,9 +106,20 @@ def upload_file(request):
 
     else:
         # Create the form for uploading the file
+        if password != "asdf":
+            return render_to_response("signin_failure.html")
+
         form = UploadFileForm()
         c = {}
         c.update(csrf(request))
         c["form"] = form
 
         return render_to_response("upload.html", c)
+
+def signin(request):
+    """ Shows the sign in screen """
+    c = {}
+    c.update(csrf(request))
+    return render_to_response("signin.html", c)
+
+

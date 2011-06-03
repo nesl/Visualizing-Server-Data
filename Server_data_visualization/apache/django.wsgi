@@ -1,9 +1,9 @@
 import os
 import sys
 
-path0 = '/home/nesl/Visualizing-Server-Data'
-path1 = '/home/nesl/Visualizing-Server-Data/Server_data_visualization'
-path2 = '/home/nesl/Visualizing-Server-Data/Server_data_visualization/power'
+path0 = '/data/dev/Visualizing-Server-Data'
+path1 = '/data/dev/Visualizing-Server-Data/Server_data_visualization'
+path2 = '/data/dev/Visualizing-Server-Data/Server_data_visualization/power'
 
 # Include path to folder before project
 if path0 not in sys.path:
