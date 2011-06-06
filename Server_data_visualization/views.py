@@ -9,10 +9,11 @@ import subprocess, shlex, signal
 import settings
 import stat
 import time
-
 import os
 
+# Import own files
 import add_to_database
+import login
 
 class UploadFileForm(forms.Form):
     """ Specifies the parameters needed by the form """
@@ -105,7 +106,7 @@ def upload_file(request):
             # Get username and password and check
             username = request.POST["username"]
             password = request.POST["password"]
-            if username != "admin" or password != "password":
+            if username != login.username or password != login.password:
                 return render_to_response("signin_failure.html",c)
 
             # Ask for the upload again if the form is not valid
