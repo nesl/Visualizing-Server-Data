@@ -19,9 +19,9 @@ var chart1; // globally available
 function load_data()
 {
     power_array = [];
-    $.get('../../power/{{data_list.field}}/{{data_list.field_val}}/data',
+    $.get('../power/{{data_list.field}}/{{data_list.field_val}}/data',
         function(data, XMLHttpRequest) {
-            data = JSON.parse(data);
+            //data = JSON.parse(data);
             total_power = 0;
             console.log('Received data');
             if(data.length <= 0)

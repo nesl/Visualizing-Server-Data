@@ -10,6 +10,7 @@ import settings
 import stat
 import time
 import os
+import sys
 
 # Import own files
 import add_to_database
@@ -104,10 +105,15 @@ def upload_file(request):
             c = RequestContext(request)
 
             # Get username and password and check
-            username = request.POST["username"]
-            password = request.POST["password"]
+            try:
+                username = request.POST["username"]
+                password = request.POST["password"]
+            except MultiValueDictKeyError:
+                return render_to_response("signin.html", c)
+
             if username != login.username or password != login.password:
                 return render_to_response("signin_failure.html",c)
+
 
             # Ask for the upload again if the form is not valid
             form = UploadFileForm()
@@ -119,8 +125,13 @@ def upload_file(request):
         c = RequestContext(request)
 
         # Get username and password and check
-        username = request.POST["username"]
-        password = request.POST["password"]
+        try:
+            username = request.POST["username"]
+            password = request.POST["password"]
+        #except MultiValueDictKeyError:
+        except:
+            return render_to_response("signin.html", c)
+
         if username != "admin" or password != "password":
             return render_to_response("signin_failure.html",c)
 
