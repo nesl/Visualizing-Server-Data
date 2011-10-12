@@ -13,5 +13,5 @@ urlpatterns = patterns('',
     (r'^power/', include('power.urls')),
     (r'^upload/', 'views.upload_file'),
     (r'^admin/', include(admin.site.urls)),
-    (r'^', 'views.signin'),
+    (r'^', include('registration.urls'))
 )

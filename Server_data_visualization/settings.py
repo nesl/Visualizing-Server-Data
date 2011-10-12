@@ -1,4 +1,5 @@
 # Django settings for Server_data_visualization project.
+import os
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -9,14 +10,13 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-ABS_PATH = '/data/dev/Visualizing-Server-Data/'
+ABS_PATH = os.path.abspath("..") + '/'
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
         'NAME':
-        ABS_PATH + 'database',                      # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
+        ABS_PATH + 'database',                      # Or path to database file if using sqlite3.  'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
@@ -95,6 +95,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'power',
+    'registration',
     # 'django.contrib.messages',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',

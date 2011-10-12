@@ -140,11 +140,3 @@ def upload_file(request):
         c["form"] = form
 
         return render_to_response("upload.html", c)
-
-def signin(request):
-    """ Shows the sign in screen """
-    c = {}
-    c.update(csrf(request))
-    return render_to_response("signin.html", c)
-
-
