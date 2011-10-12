@@ -1,0 +1,16 @@
+data/base.html.i
+data/index.html.i
+data/registration/activate.html.i
+data/registration/activation_email.txt.i
+data/registration/activation_email_subject.txt.i
+data/registration/login.html.i
+data/registration/logout.html.i
+data/registration/password_change_done.html.i
+data/registration/password_change_form.html.i
+data/registration/password_reset_complete.html.i
+data/registration/password_reset_confirm.html.i
+data/registration/password_reset_done.html.i
+data/registration/password_reset_email.html.i
+data/registration/password_reset_form.html.i
+data/registration/registration_complete.html.i
+data/registration/registration_form.html.i
