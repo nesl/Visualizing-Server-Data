@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.context_processors import csrf
 from django import forms
 from django.template import RequestContext
+from django.contrib.auth.decorators import login_required
 
 # Subprocess, to spawn new process and return output
 import subprocess, shlex, signal
@@ -14,8 +15,6 @@ import sys
 
 # Import own files
 import add_to_database
-import accounts
-
 
 # Forms
 class UploadFileForm(forms.Form):
@@ -34,6 +33,7 @@ def handle_uploaded_file(f):
     destination.close()
     # os.chmod(path, stat.S_IXUSR | stat.S_IWUSR | stat.S_IRUSR)
 
+@login_required
 def upload_file(request):
     """ Starts the DAQ, runs the executable, and stops the DAQ """
     if request.method == "POST":
@@ -103,50 +103,10 @@ def upload_file(request):
                     another process.", "time":0}
             return render_to_response("upload_success.html", {'c': c})
 
-        else:
-            c = RequestContext(request)
+    # Create the form
+    c = RequestContext(request)
+    # Create the form for uploading the file
+    form = UploadFileForm()
+    c["form"] = form
 
-            # Get username and password and check
-            try:
-                username = request.POST["username"]
-                password = request.POST["password"]
-            except MultiValueDictKeyError:
-                return render_to_response("signin.html", c)
-
-            if (username, password) not in accounts.accounts:
-            #if username not in accounts.username or password != login.password:
-                return render_to_response("signin_failure.html",c)
-
-
-            # Ask for the upload again if the form is not valid
-            form = UploadFileForm()
-            c["form"] = form
-
-            return render_to_response("upload.html", c)
-
-    else:
-        c = RequestContext(request)
-
-        # Get username and password and check
-        try:
-            username = request.POST["username"]
-            password = request.POST["password"]
-        #except MultiValueDictKeyError:
-        except:
-            return render_to_response("signin.html", c)
-
-        if username != "admin" or password != "password":
-            return render_to_response("signin_failure.html",c)
-
-        # Create the form for uploading the file
-        form = UploadFileForm()
-        c["form"] = form
-
-        return render_to_response("upload.html", c)
-
-def login(request):
-    """ Shows the sign in screen """
-
-    c = {}
-    c.update(csrf(request))
-    return render_to_response("registration/login.html", c)
+    return render_to_response("upload.html", c)

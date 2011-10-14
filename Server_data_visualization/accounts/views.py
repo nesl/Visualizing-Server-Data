@@ -1,6 +1,8 @@
 from forms import RegisterForm
 from django.shortcuts import render_to_response
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
+from django.core.context_processors import csrf
+from activation import activate_user
 
 def register(request):
     if request.method == 'POST':
@@ -11,4 +13,15 @@ def register(request):
     else:
         form = RegisterForm()
 
-    return render_to_response("accounts/register.html",  {'form': form,  })
+    context = {'form': form}
+    context.update(csrf(request))
+    return render_to_response("accounts/register.html", context)
+
+def activate(request):
+    user = request.GET.get('user')
+    code = request.GET.get('code')
+
+    if activate_user(user,  code):
+        return HttpResponseRedirect("/")
+    else:
+        raise Http404
