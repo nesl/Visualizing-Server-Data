@@ -14,8 +14,10 @@ import sys
 
 # Import own files
 import add_to_database
-import login
+import accounts
 
+
+# Forms
 class UploadFileForm(forms.Form):
     """ Specifies the parameters needed by the form """
     # title = forms.CharField(max_length=50)
@@ -111,7 +113,8 @@ def upload_file(request):
             except MultiValueDictKeyError:
                 return render_to_response("signin.html", c)
 
-            if username != login.username or password != login.password:
+            if (username, password) not in accounts.accounts:
+            #if username not in accounts.username or password != login.password:
                 return render_to_response("signin_failure.html",c)
 
 
@@ -140,3 +143,10 @@ def upload_file(request):
         c["form"] = form
 
         return render_to_response("upload.html", c)
+
+def login(request):
+    """ Shows the sign in screen """
+
+    c = {}
+    c.update(csrf(request))
+    return render_to_response("registration/login.html", c)

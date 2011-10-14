@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1> PowerViz Registration </h1>
+
+    <form method="post" action="">{% csrf_token %}
+        <div>
+            {{ form.username.errors }}
+            <label for="id_username">Username: </label>
+            {{ form.username }}
+        </div>
+        <div>
+            {{ form.email.errors }}
+            <label for="id_email">Email: </label>
+            {{ form.email }}
+        </div>
+        <div>
+            {{ form.password1.errors }}
+            <label for="id_password1">Password: </label>
+            {{ form.password1 }}
+        </div>
+        <div>
+            {{ form.password2.errors }}
+            <label for="id_password2">Repeat password: </label>
+            {{ form.password2 }}
+        </div>
+        <input type="submit" value="Register" />
+    </form>
+{% endblock %}        

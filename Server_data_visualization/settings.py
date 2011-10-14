@@ -63,6 +63,14 @@ ADMIN_MEDIA_PREFIX = '/media/'
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '=&v!#d*%q=lqc!2%+z3zp7r=_$nmb-7s=*%up^jquw1&)cft9k'
 
+# Enable Django emailing
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER =
+# EMAIL_HOST_PASSWORD =
+EMAIL_HOST = "localhost"
+EMAIL_PORT = 1025
+
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -95,7 +103,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'power',
-    'registration',
+    'accounts',
     # 'django.contrib.messages',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
