@@ -19,9 +19,21 @@ import add_to_database
 # Forms
 class UploadFileForm(forms.Form):
     """ Specifies the parameters needed by the form """
+
+    BLADE_CHOICES = [
+            ('0', '0'),
+            ('1', '1'),
+            ('2', '2'),
+            ('3', '3'),
+            ('4', '4'),
+            ('5', '5'),
+            ('6', '6'),
+            ('7', '7'),
+    ]
     # title = forms.CharField(max_length=50)
     file  = forms.FileField()
     parameters = forms.CharField(required=False)
+    blade = forms.ChoiceField(choices=BLADE_CHOICES, widget=forms.RadioSelect)
 
 def handle_uploaded_file(f):
     """ Writes the file in chunks to the file system with RWX privileges """

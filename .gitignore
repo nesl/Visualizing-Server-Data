@@ -1,2 +1,5 @@
 *.pyc
 Server_data_visualization/login.py
+Server_data_visualization/daq_results.txt
+accounts.py
+database

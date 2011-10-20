@@ -10,7 +10,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-ABS_PATH = os.path.abspath("..") + '/'
+ABS_PATH = '/data/dev/Visualizing-Server-Data/'
 
 DATABASES = {
     'default': {
