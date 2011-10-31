@@ -15,6 +15,15 @@ To use this software,
     or
     sudo apt-get install python-django
 
+    Also, install paramiko for sshing to other servers:
+    sudo apt-get install python-paramiko
+
+    Fill in passwords for ssh connections in account_info.py (Not in the
+    project currently for privacy reasons).
+    username and password are for the ssh connection
+    The next part of the account_info is for setting up the email for
+    approving users to the site. Please fill out the information.
+
 4. Start the mongodb server on a port. The following using port 90:
     sudo mongod --port 90
 

@@ -12,9 +12,12 @@ import stat
 import time
 import os
 import sys
+import ssh
+import account_info
 
 # Import own files
 import add_to_database
+
 
 # Forms
 class UploadFileForm(forms.Form):
@@ -28,7 +31,6 @@ class UploadFileForm(forms.Form):
             ('4', '4'),
             ('5', '5'),
             ('6', '6'),
-            ('7', '7'),
     ]
     # title = forms.CharField(max_length=50)
     file  = forms.FileField()
@@ -60,20 +62,44 @@ def upload_file(request):
             # Obtain root privileges
             # os.setuid(0)
 
+            # Select daq based on blade
+            blade = request.POST['blade']
+            if blade == 0 or blade == 1 or blade == 4:
+                daq = 0
+            else:
+                daq = 2
+
             # Start the DAQ and get PID
-            cmd = "sudo " + settings.ABS_PATH + "cmd/daq daq0"
+            cmd = "sudo " + settings.ABS_PATH + "cmd/daq daq" + str(daq)
             args = shlex.split(cmd)
-            print "ARGS: ", args
+            #args = cmd
+            #print "ARGS: " , args
+            #process = subprocess.Popen(['sudo', settings.ABS_PATH + "cmd/daq\
+                    #daq" + str(daq)],\
             process = subprocess.Popen(args,\
                     stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 
+
+            # Copy the executable
+            #args = "scp " + settings.ABS_PATH +\
+                    #"Server_data_visualization/uploads/executable nesl@ac"\
+                    #+ blade + ":~/PowerViz_Executables"
+            #print "Args: " + args
+            #results = subprocess.Popen(args, stdout=subprocess.PIPE,\
+                    #stderr=subprocess.PIPE, shell=True).communicate()
+
             # Run the executable
             parameters = request.POST['parameters']
-            args = "time " + settings.ABS_PATH +\
-            "Server_data_visualization/uploads/executable " + parameters
-            #"Server_data_visualization/uploads/" + file_name + " " + parameters
-            results = subprocess.Popen((args),\
-                    stdout=subprocess.PIPE,stderr=subprocess.PIPE, shell=True).communicate()
+            #args = "ssh nesl@ac" + blade + " time ~/PowerViz_Executables/executable " + parameters
+            #print "ARGS: " , args
+            #results = subprocess.Popen((args),\
+                    #stdout=subprocess.PIPE,stderr=subprocess.PIPE, shell=True).communicate()
+
+            start = time.time()
+            s = ssh.Connection('ac' + blade, username=account_info.username, password=account_info.password)
+            results = s.execute('time ~/PowerViz_Executables/executable ' + parameters)
+            elapsed = str(time.time() - start) + " s"
+            s.close()
 
             # Add a one second buffer
             time.sleep(1)
@@ -89,8 +115,10 @@ def upload_file(request):
             print "DAQ_ERR: " + daq_results[1]
             print "\n"
 
+            print "Results: " , results
+
             # If no errors or the comedi device is not busy
-            if results[1] == None or daq_results[1].find("busy") == -1:
+            if results == None or daq_results[1].find("busy") == -1:
                 print "GOT IN HERE"
                 # Save the DAQ results to output file for reference later
                 f = open(settings.ABS_PATH + "Server_data_visualization/daq_results.txt", "w")
@@ -98,14 +126,16 @@ def upload_file(request):
                 f.close()
 
                 # Add the information to the database in another process
-                add_to_database.add_to_database(0)
+                add_to_database.add_to_database(daq)
 
                 # Strip only the user, system, and elapsed time from the time
                 # results. Cutoff after elapsed, which is 7 characters long.
-                etime = results[1][:results[1].find("elapsed") + 7]
+
+                #etime = results[1][:results[1].find("elapsed") + 7]
+                #print "etime: " +  etime
 
                 # Record results to the dictionary
-                c = {"results":results[0], "time":etime}
+                c = {"results":results[0], "time": elapsed}
             else:
                 # Report the error
                 if results[1] == None:

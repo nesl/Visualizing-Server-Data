@@ -1,5 +1,6 @@
 # Django settings for Server_data_visualization project.
 import os
+import account_info
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -64,12 +65,11 @@ ADMIN_MEDIA_PREFIX = '/media/'
 SECRET_KEY = '=&v!#d*%q=lqc!2%+z3zp7r=_$nmb-7s=*%up^jquw1&)cft9k'
 
 # Enable Django emailing
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER =
-# EMAIL_HOST_PASSWORD =
-EMAIL_HOST = "localhost"
-EMAIL_PORT = 1025
+EMAIL_HOST = account_info.email_host
+EMAIL_USE_TLS = account_info.email_use_tls
+EMAIL_PORT = account_info.email_port
+EMAIL_HOST_USER = account_info.email_host_user
+EMAIL_HOST_PASSWORD = account_info.email_host_password
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (

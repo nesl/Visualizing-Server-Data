@@ -1,21 +1,32 @@
 import os
 import sys
 
-path0 = '/data/dev/Visualizing-Server-Data'
-path1 = '/data/dev/Visualizing-Server-Data/Server_data_visualization'
-path2 = '/data/dev/Visualizing-Server-Data/Server_data_visualization/power'
+paths = [
+        '/data/dev/Visualizing-Server-Data',
+        '/data/dev/Visualizing-Server-Data/Server_data_visualization',
+        '/data/dev/Visualizing-Server-Data/Server_data_visualization/power',
+        '/data/dev/Visualizing-Server-Data/cmd/'
+        ]
 
-# Include path to folder before project
-if path0 not in sys.path:
-    sys.path.append(path0)
+for path in paths:
+    if path not in sys.path:
+        sys.path.append(path)
 
-# Include path to project
-if path1 not in sys.path:
-    sys.path.append(path1)
-
-# Include path to power
-if path2 not in sys.path:
-    sys.path.append(path2)
+# # Include path to folder before project
+# if path0 not in sys.path:
+#     sys.path.append(path0)
+# 
+# # Include path to project
+# if path1 not in sys.path:
+#     sys.path.append(path1)
+# 
+# # Include path to power
+# if path2 not in sys.path:
+#     sys.path.append(path2)
+# 
+# # Include path to power
+# if path2 not in sys.path:
+#     sys.path.append(path2)
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'Server_data_visualization.settings'
 

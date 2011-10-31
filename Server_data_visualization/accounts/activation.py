@@ -15,13 +15,15 @@ def send_activation(user):
         'url': url,
     })
 
-    send_mail('Activate account at super site', template.render(context), 'no-reply@example.com', [user.email])
+    send_mail('Activate ' + user.username + ' at PowerViz', template.render(context), 'no-reply@example.com', ['power.visualizer@gmail.com', 'jtsao22@gmail.com'])
+    print "Sent email!"
 
 def activate_user(username,  code):
     if code == md5(username).hexdigest():
         user = User.objects.get(username=username)
         user.is_active = True
         user.save()
+        send_mail('Your PowerViz account has been activated!', 'You can now log on to PowerViz!', 'no-reply@example.com', [user.email])
         return True
     else:
         return False
