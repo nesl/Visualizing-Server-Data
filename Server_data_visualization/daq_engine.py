@@ -1,11 +1,16 @@
-#!/usr/bin/python
-import sys
+import os
+import select
+import subprocess
 import settings
+import shlex
+import sys
 import time
+import settings
+from pymongo import Connection
+from cStringIO import StringIO
 
-
-def add_to_database(daq_file, daq):
-
+# This function adds the daq data to mongodb
+def add_to_database(daq_data, daq):
 
     # Open the daq configuration file and daq file created from running the
     # executable
@@ -13,8 +18,6 @@ def add_to_database(daq_file, daq):
         daq_config = open(settings.ABS_PATH + "cmd/config/daq0_description", "r")
     else:
         daq_config = open(settings.ABS_PATH + "cmd/config/daq2_description", "r")
-    #daq_file = open(settings.ABS_PATH + "Server_data_visualization/daq_results.txt", "r")
-
 
     # Read daq configuration file
     config = daq_config.readline()
@@ -40,8 +43,8 @@ def add_to_database(daq_file, daq):
         else:
             counter += 1
 
-    # Read the daq file and store the data into Mongodb
-    for line in daq_file:
+    # Read the daq data and store into Mongodb
+    for line in daq_data:
         tokened_line = line.split(' ')
         count = 0
         for token in tokened_line:
@@ -57,10 +60,58 @@ def add_to_database(daq_file, daq):
                                     }
                     db.data.insert(mongo_entry)
             except ValueError, e:
-                print ''
+                pass # Noop
             if count == 15:
                 break
             count += 1
 
     # Close the files
     daq_config.close()
+cmd = "sudo " + settings.ABS_PATH + "cmd/daq daq0"
+target = shlex.split(cmd)
+PIPE = subprocess.PIPE
+engine = subprocess.Popen(target, bufsize=0, stdout=PIPE, stderr=PIPE)
+
+class LineReader(object):
+
+    def __init__(self, fd):
+        self._fd = fd
+        self._buf = ''
+
+    def fileno(self):
+        return self._fd
+
+    def readlines(self):
+        data = os.read(self._fd, 4096)
+        if not data:
+            # EOF
+            return None
+        self._buf += data
+        if '\n' not in data:
+            return []
+        tmp = self._buf.split('\n')
+        lines, self._buf = tmp[:-1], tmp[-1]
+        return lines
+
+if __name__ == "__main__":
+    proc_stdout = LineReader(engine.stdout.fileno())
+    #proc_stderr = LineReader(engine.stderr.fileno())
+    readable = [proc_stdout]
+
+    # Connect to Mongodb
+    connection = Connection('localhost', 90)
+    #connection.drop_database('visual_server_db')
+    db = connection.visual_server_db
+    #db.create_collection('data', {'capped': True, 'size': 29304000})
+
+    while readable:
+        ready, _, _ = select.select(readable, [], [], 10.0)
+        if ready is None:
+            continue
+        stream = ready[0]
+        lines = stream.readlines()
+        add_to_database(lines, 0)
+        #for line in lines:
+        #    print line
+        #print "______________________"
+

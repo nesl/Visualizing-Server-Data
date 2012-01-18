@@ -95,6 +95,10 @@ TEMPLATE_DIRS = (
     ABS_PATH + 'templates',
 )
 
+LOGIN_URL = '/Visualizing-Server-Data/accounts/login'
+
+LOGIN_REDIRECT_URL = '/upload/'
+
 STATIC_DOC_ROOT = ABS_PATH + "Server_data_visualization/static"
 
 INSTALLED_APPS = (
@@ -110,4 +114,3 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
-

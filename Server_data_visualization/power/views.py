@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
+from django.core.cache import cache
 
 from pymongo import Connection
 from pymongo import json_util
@@ -20,6 +21,7 @@ def charts_menu(request):
 
 @login_required
 def results(request, field, field_val):
+    print "GOT IN RESULTS"
     get_val = request.GET.get('channel')
     if get_val != None:
         field = "data_channel"
@@ -41,17 +43,52 @@ def posted_results(request):
 
 @login_required
 def get_data(request, field, field_val):
+    print "IM IN HERE"
+    start_time = cache.get('start_time')
+    end_time = cache.get('end_time')
+
+    print "Start:     " + str(start_time)
+    print "End:       " + str(end_time)
+    print "Field:     " + str(field)
+    print "Field_val: " + str(field_val)
+
     if field != "type":
-        data_list = db.data.find({field: int(field_val)})
+        data_list = db.data.find({field: int(field_val), 'time': {'$gt': start_time, '$lt': end_time}})
     else:
-        if field_val == "CPU":
-            data_list = db.data.find({field: {'$regex' : '^CPU.*'}})
-        elif field_val == "RAM":
-            data_list = db.data.find({field: {'$regex' : '^RAM.*'}})
+        if str(field_val) == "CPU":
+            data_list = db.data.find({'type': {'$regex' : '^CPU.*'}, 'time': {'$gt': start_time, '$lt': end_time}})
+        elif str(field_val) == "RAM":
+            data_list = db.data.find({'type': {'$regex' : '^RAM.*'}, 'time': {'$gt': start_time, '$lt': end_time}})
         else:
-            data_list = db.data.find({field: field_val})
+            data_list = db.data.find({field: field_val, 'time': {'$gt': start_time, '$lt': end_time}})
 
     data = []
     for obj in data_list:
         data.append(obj)
     return HttpResponse(json.dumps(data, default=json_util.default))
+
+@login_required
+def get_live_data(request, field, field_val):
+    start_time = cache.get('start_time')
+    end_time = cache.get('end_time')
+
+    if field != "type":
+        data_list = db.data.find({field: int(field_val), 'time': {'$gt': start_time, '$lt': end_time}})
+    else:
+        if field_val == "CPU":
+            data_list = db.data.find({field: {'$regex' : '^CPU.*'}, 'time': {'$gt': start_time, '$lt': end_time}})
+        elif field_val == "RAM":
+            data_list = db.data.find({field: {'$regex' : '^RAM.*'}, 'time': {'$gt': start_time, '$lt': end_time}})
+        else:
+            data_list = db.data.find({field: field_val, 'time': {'$gt': start_time, '$lt': end_time}})
+
+
+    data = []
+    for obj in data_list:
+        data.append(obj)
+    return HttpResponse(json.dumps(data, default=json_util.default))
+
+@login_required
+def check_results(request):
+    print "CHECK THE URL BEING CHECKED!"
+
