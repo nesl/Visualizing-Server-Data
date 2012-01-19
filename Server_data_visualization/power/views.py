@@ -43,7 +43,6 @@ def posted_results(request):
 
 @login_required
 def get_data(request, field, field_val):
-    print "IM IN HERE"
     start_time = cache.get('start_time')
     end_time = cache.get('end_time')
 
@@ -69,17 +68,23 @@ def get_data(request, field, field_val):
 
 @login_required
 def get_live_data(request, field, field_val):
+    start_time = cache.get('start_time')
+    end_time = cache.get('end_time')
+
+    print "Start:     " + str(start_time)
+    print "End:       " + str(end_time)
+    print "Field:     " + str(field)
+    print "Field_val: " + str(field_val)
 
     if field != "type":
         data_list = db.data.find({field: int(field_val), 'time': {'$gt': start_time, '$lt': end_time}})
     else:
-        if field_val == "CPU":
-            data_list = db.data.find({field: {'$regex' : '^CPU.*'}, 'time': {'$gt': start_time, '$lt': end_time}})
-        elif field_val == "RAM":
-            data_list = db.data.find({field: {'$regex' : '^RAM.*'}, 'time': {'$gt': start_time, '$lt': end_time}})
+        if str(field_val) == "CPU":
+            data_list = db.data.find({'type': {'$regex' : '^CPU.*'}, 'time': {'$gt': start_time, '$lt': end_time}})
+        elif str(field_val) == "RAM":
+            data_list = db.data.find({'type': {'$regex' : '^RAM.*'}, 'time': {'$gt': start_time, '$lt': end_time}})
         else:
             data_list = db.data.find({field: field_val, 'time': {'$gt': start_time, '$lt': end_time}})
-
 
     data = []
     for obj in data_list:

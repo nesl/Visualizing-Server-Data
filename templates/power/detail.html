@@ -43,7 +43,7 @@ function load_data()
             // interval = 1/sampling rate per channel
             frequency = 1000; 
             num_channels = 16;
-            default_interval = 1/(frequency/num_channels)*2;
+            default_interval = 1/(frequency/num_channels);
             data_list_field = "{{data_list.field}}";
             data_list_field_val = "{{data_list.field_val}}";
 
