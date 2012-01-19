@@ -3,8 +3,9 @@ This project visualizes CPU, RAM, and SSD power data on a website using Django, 
 This software was developed using Ubuntu 10.10.
 To use this software,
 
-1. Install mongodb and pymongo:
-    sudo apt-get install mongodb, python-pymongo
+1. Install mongodb, pymongo, and memcached
+    sudo apt-get install mongodb, python-pymongo, memcached, python-setuptools
+    sudo easy_install python-memcached
 
 2. Create the data directory for mongodb:
     sudo mkdir /data
@@ -26,6 +27,12 @@ To use this software,
 
 4. Start the mongodb server on a port. The following using port 90:
     sudo mongod --port 90
+
+    and start memcached:
+    sudo memcached -d -u www-data -p 11211 -m 64
+
+    (-d is daemon mode, -u is the user, -p is the port, and -max amount of
+    memory used)
 
 5. To load test data into Mongodb taken from our Atom servers,
     run test_data/parse_server_output.py with output_shorter.daq2 as input:

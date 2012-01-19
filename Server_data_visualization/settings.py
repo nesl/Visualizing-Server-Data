@@ -79,11 +79,13 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
 )
 
 ROOT_URLCONF = 'Server_data_visualization.urls'
@@ -100,6 +102,8 @@ LOGIN_URL = '/Visualizing-Server-Data/accounts/login'
 LOGIN_REDIRECT_URL = '/upload/'
 
 STATIC_DOC_ROOT = ABS_PATH + "Server_data_visualization/static"
+
+CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
 
 INSTALLED_APPS = (
     'django.contrib.auth',

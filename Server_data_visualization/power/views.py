@@ -69,8 +69,6 @@ def get_data(request, field, field_val):
 
 @login_required
 def get_live_data(request, field, field_val):
-    start_time = cache.get('start_time')
-    end_time = cache.get('end_time')
 
     if field != "type":
         data_list = db.data.find({field: int(field_val), 'time': {'$gt': start_time, '$lt': end_time}})
