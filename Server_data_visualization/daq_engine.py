@@ -9,8 +9,9 @@ import settings
 from pymongo import Connection
 from cStringIO import StringIO
 
-# This function adds the daq data to mongodb
+##############################################################################
 def add_to_database(daq_data, daq):
+    """ This function adds the daq data to mongodb """
 
     # Open the daq configuration file and daq file created from running the
     # executable
@@ -67,10 +68,8 @@ def add_to_database(daq_data, daq):
 
     # Close the files
     daq_config.close()
-cmd = "sudo " + settings.ABS_PATH + "cmd/daq daq0"
-target = shlex.split(cmd)
-PIPE = subprocess.PIPE
-engine = subprocess.Popen(target, bufsize=0, stdout=PIPE, stderr=PIPE)
+
+##############################################################################
 
 class LineReader(object):
 
@@ -93,7 +92,14 @@ class LineReader(object):
         lines, self._buf = tmp[:-1], tmp[-1]
         return lines
 
+##############################################################################
+
 if __name__ == "__main__":
+    cmd = "sudo " + settings.ABS_PATH + "cmd/daq daq0"
+    target = shlex.split(cmd)
+    PIPE = subprocess.PIPE
+    engine = subprocess.Popen(target, bufsize=0, stdout=PIPE, stderr=PIPE)
+
     proc_stdout = LineReader(engine.stdout.fileno())
     #proc_stderr = LineReader(engine.stderr.fileno())
     readable = [proc_stdout]
@@ -112,6 +118,5 @@ if __name__ == "__main__":
         lines = stream.readlines()
         add_to_database(lines, 0)
         #for line in lines:
-        #    print line
-        #print "______________________"
+            #print line
 
