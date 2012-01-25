@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block content %}
+<script src="../site_media/jquery.min.js" type="text/javascript"></script>
+<script src="../site_media/highcharts.js" type="text/javascript"></script>
+
+<div id="chart-container-1" class="highcharts-container" style="width: 100%;
+    position: relative; height: 100% margin: 0 2; clear:both"></div>
+
+<div id="text-container" style="position: absolute; top: 400px; left: 15 px; margin: 0 2;">
+</div>
+
+<div id="text-container2" style="position: absolute; top: 420px; left: 15 px; margin: 0 2;">
+</div>
+
+<script type = "text/javascript">
+
+var chart1; // globally available
+
+function load_data()
+{
+    power_array = [];
+    $.get('../{{data_list.field}}/{{data_list.field_val}}/livedata',
+        function(data, XMLHttpRequest) {
+            data = JSON.parse(data);
+            total_power = 0;
+            console.log('Received data');
+            if(data.length <= 0)
+            {
+                alert("No data was found for {{data_list.field}} \
+{{data_list.field_val}}.\n");
+                return; 
+            }
+            for(i = 0; i < data.length; i++)
+            {
+                power_array[i] = data[i].power;
+                total_power += data[i].power;
+            }
+
+            // default interval calculation:
+            // sampling rate per channel = frequency/num_channels
+            // interval = 1/sampling rate per channel
+            frequency = 1000; 
+            num_channels = 16;
+            default_interval = 1/(frequency/num_channels);
+            data_list_field = "{{data_list.field}}";
+            data_list_field_val = "{{data_list.field_val}}";
+
+            // Calculate pointInterval based on data_list_field
+            switch(data_list_field)
+            {
+                case "data_channel":
+                    // The default interval is calculated in respect to one
+                    // channel
+                    chart1.series[0].pointInterval = default_interval;
+                    break;
+                case "node":
+                    // One node has 4 channels
+                    chart1.series[0].pointInterval = default_interval/4;
+                    break;
+                case "type":
+                    // If All CPU or All RAM, there are 4 channels total of
+                    // CPU/RAM
+                    if(data_list_field_val == "CPU" ||
+                            data_list_field_val == "RAM")
+                        chart1.series[0].pointInterval = default_interval/4;
+                    // If CPU0, CPU1, RAM0, RAM1, there are 2 channels each of
+                    // CPU0, CPU1, RAM0, RAM1
+                    else
+                        chart1.series[0].pointInterval = default_interval/2;
+                    break;
+                case "daq":
+                    // Each daq has 16 channels
+                    chart1.series[0].pointInterval = default_interval/16;
+                    break;
+
+                default:
+                    chart1.series[0].pointInterval = default_interval;
+            }
+
+            chart1.series[0].setData(power_array,true);
+            // Set Energy: 
+            // Total power * # measurements/(sampling rate/# channels)
+            document.getElementById("text-container").textContent = "Average\
+                Power: " + total_power/data.length;
+            document.getElementById("text-container2").textContent ="Energy: \
+            "+ total_power/(frequency/num_channels);
+            
+    
+        }
+    );
+}
+
+$(document).ready(function() {
+        chart1 = new Highcharts.Chart({
+         chart: {
+            renderTo: 'chart-container-1',
+            zoomType: 'x',
+            defaultSeriesType: 'line',
+            events: {
+                load: load_data
+            }
+         },
+         title: {
+            text: 'Power Measurements for {{data_list.field}} {{data_list.field_val}} '
+         },
+         xAxis: {
+            title: {
+                text: 'Time (seconds)'
+            }
+         },
+         yAxis: {
+            title: {
+               text: 'Power (watts)'
+            }
+         },
+         series: [{
+            name: 'Power',
+            data: [] 
+         }
+         ]
+      });
+    })
+
+</script>
+{% endblock %}

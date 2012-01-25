@@ -28,7 +28,7 @@ def results(request, field, field_val):
         field_val = int(get_val)
 
     data_list = {"field":field, "field_val":field_val}
-    return render_to_response('power/detail.html', {'data_list': data_list})
+    return render_to_response('power/chart.html', {'data_list': data_list})
 
 @login_required
 def posted_results(request):
@@ -39,7 +39,7 @@ def posted_results(request):
         else:
             if field_val.startswith("CPU") or field_val.startswith("RAM"):
                 data_list = {"field" :field, "field_val" : field_val}
-    return render_to_response('power/detail.html', {'data_list': data_list})
+    return render_to_response('power/chart.html', {'data_list': data_list})
 
 @login_required
 def get_data(request, field, field_val):
