@@ -55,3 +55,7 @@ To use this software,
 
     into a web browser and enjoy.
 
+Troubleshooting Notes:
+
+Be sure that the database file created by django is owned by apache:
+chown www-data database
