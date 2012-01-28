@@ -81,13 +81,7 @@ def upload_file(request):
 
             # Record results to the dictionary
             c = {"results":results[0], "time": elapsed}
-            #else:
-                ## Report the error
-                #if results[1] == None:
-                    #c = {"results":results[1], "time":0}
-                #else:
-                    #c = {"results":"The daq is currently being used by\
-                    #another process.", "time":0}
+
             return render_to_response("upload_success.html", {'c': c})
 
     # Create the form

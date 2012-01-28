@@ -9,8 +9,6 @@ admin.autodiscover()
 from django.views.generic.simple import direct_to_template
 
 urlpatterns = patterns('',
-    #url(r'^signin$', login, name="login"),
-    #url(r'^$', login, name="login"),
     (r'^$', direct_to_template, {'template': 'base.html'}),
     # For serving static files: jquery.js and highcharts.js
     (r'site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_DOC_ROOT}),
