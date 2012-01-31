@@ -36,6 +36,19 @@ def results(request, field, field_val):
     data_list = {"field":field, "field_val":field_val}
     return render_to_response('power/chart.html', {'data_list': data_list})
 
+##############################################################################
+@login_required
+def posted_results(request):
+    """ Passes the field and field_val (i.e. data_channel and 0) to the
+    chart.html page """
+    req = request.GET
+    for field, field_val in req.iteritems():
+        if field != "type":
+            data_list = {"field": field, "field_val": int(field_val)}
+        else:
+            if field_val.startswith("CPU") or field_val.startswith("RAM"):
+                data_list = {"field": field, "field_val": field_val}
+    return render_to_response('power/chart.html', {'data_list': data_list})
 
 ##############################################################################
 @login_required

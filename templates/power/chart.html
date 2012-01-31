@@ -27,9 +27,7 @@ function load_data()
             if(data.length <= 0)
             {
                 alert("No data was found for {{data_list.field}} \
-{{data_list.field_val}}.\nThere is a minimum\
- amount of time the program must run in order for the daq to return significant\
- results.\nTherefore, consider increasing the time spent for your program.");
+{{data_list.field_val}}.");
                 return; 
             }
             for(i = 0; i < data.length; i++)

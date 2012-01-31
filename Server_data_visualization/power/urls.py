@@ -7,4 +7,5 @@ urlpatterns = patterns('power.views',
     (r'^(?P<field>\w+)/(?P<field_val>\d+)/data', 'get_data'),
     (r'^(?P<field>\w+)/(?P<field_val>\w+)/data', 'get_data'),
     (r'^(?P<field>\w+)/(?P<field_val>\w+)/livedata', 'get_live_data'),
+    ('results/$', 'posted_results'),
 )
