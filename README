@@ -49,11 +49,16 @@ To use this software,
     python manage.py syncdb
     python manage.py runserver 0:8000
 
-8. To see the website, type
+8. To see the website:
+
+    Start the daq_engine:
+    python daq_engine &
+
+    and navigate to:
 
     http://127.0.0.1:8000/upload/
 
-    into a web browser and enjoy.
+    a web browser and enjoy.
 
 Troubleshooting Notes:
 

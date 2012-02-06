@@ -5,10 +5,10 @@ from django import forms
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.core.cache import cache
+from django.conf import settings
 
 # Subprocess, to spawn new process and return output
 import subprocess, shlex, signal
-from django.conf import settings
 import stat
 import time
 import os
@@ -22,7 +22,7 @@ import add_to_database
 # Mongo
 from pymongo import Connection
 
-# Forms
+##############################################################################
 class UploadFileForm(forms.Form):
     """ Specifies the parameters needed by the form """
 
@@ -39,6 +39,7 @@ class UploadFileForm(forms.Form):
     parameters = forms.CharField(required=False)
     blade = forms.ChoiceField(choices=BLADE_CHOICES, widget=forms.Select(), initial='0')
 
+##############################################################################
 def handle_uploaded_file(f):
     """ Writes the file in chunks to the file system with RWX privileges """
     path = settings.ABS_PATH + "Server_data_visualization/uploads/executable"
@@ -48,6 +49,7 @@ def handle_uploaded_file(f):
     destination.close()
     # os.chmod(path, stat.S_IXUSR | stat.S_IWUSR | stat.S_IRUSR)
 
+##############################################################################
 @login_required
 def upload_file(request):
     """ Runs the executable and records time elapsed """
@@ -86,6 +88,7 @@ def upload_file(request):
 
     # Create the form
     c = RequestContext(request)
+
     # Create the form for uploading the file
     form = UploadFileForm()
     c["form"] = form
