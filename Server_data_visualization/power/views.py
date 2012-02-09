@@ -30,20 +30,6 @@ def charts_menu(request):
         context_instance=RequestContext(request))
 
 # ---------------------------------------------------------------------------#
-#@login_required
-#def results(request, field, field_val):
-    #""" Shows the chart based on the field (i.e. data_channel) and the
-    #field_val (i.e. 0) """
-
-    #get_val = request.GET.get('channel')
-    #if get_val != None:
-        #field = "data_channel"
-        #field_val = int(get_val)
-
-    #data_list = {"field":field, "field_val":field_val}
-    #return render_to_response('power/chart.html', {'data_list': data_list})
-
-# ---------------------------------------------------------------------------#
 @login_required
 def posted_results(request):
     """ Passes the field and field_val (i.e. data_channel and 0) to the

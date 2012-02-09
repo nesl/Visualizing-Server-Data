@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-<script src="../site_media/jquery.min.js" type="text/javascript"></script>
-<script src="../site_media/highcharts.js" type="text/javascript"></script>
+<script src="../site_media/js/jquery.min.js" type="text/javascript"></script>
+<script src="../site_media/js/highcharts.js" type="text/javascript"></script>
 
 <div id="chart-container-1" class="highcharts-container" style="width: 100%;
     position: relative; height: 100% margin: 0 2; clear:both"></div>
@@ -64,7 +64,8 @@ $(document).ready(function() {
          },
          xAxis: {
             title: {
-                text: 'Time (seconds)'
+                text: 'Time (seconds)',
+                tickPixelInterval: 75
             }
          },
          yAxis: {
